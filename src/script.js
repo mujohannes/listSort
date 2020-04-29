@@ -25,6 +25,5 @@ window.addEventListener('load', () => {
       masterDisplay.insertAdjacentHTML('beforeend', listItem );
     })
   })
-
 })
 
