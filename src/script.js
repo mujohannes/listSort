@@ -17,11 +17,14 @@ window.addEventListener('load', () => {
   loadData( dataFile )
   .then( (data) => { 
     const masterDisplay = document.querySelector('#master');
+    // display the items in master
     data.forEach( (item) => {
       let id = item.id;
       let name = item.name;
       masterList.push( item );
-      let listItem = `<li data-id="${id}">${name}</li>`;
+      let listItem = `<li data-id="${id}">
+                      ${name}
+                      </li>`;
       masterDisplay.insertAdjacentHTML('beforeend', listItem );
     })
   })
