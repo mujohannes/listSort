@@ -12,6 +12,17 @@ function removeFromList( list, id ) {
   });
 }
 
+function sortByName( list ) {
+  list.sort( (item1, item2) => {
+    if( item2.name < item1.name ) {
+      return 1;
+    }
+    else {
+      return -1;
+    }
+  }) 
+}
+
 function renderMaster(list, element ) {
   element.innerHTML = '';
   list.forEach( (item) => {
@@ -61,7 +72,7 @@ function renderPerishables( list, element ) {
       <div class="buttons">
         <button type="button" 
         class="button" 
-        data-action="perishable"
+        data-action="remove"
         data-id="${id}"
         data-name="${name}"
         data-unit="${unit}"
@@ -89,6 +100,8 @@ window.addEventListener('load', () => {
     data.forEach((item) => {
       masterList.push(item)
     })
+    // sort the master list
+    sortByName( masterList );
     renderMaster(masterList, masterDisplay )
   })
   // listen for click in master
@@ -101,12 +114,21 @@ window.addEventListener('load', () => {
     if( action == 'perishable' ) {
       const item = {id: id, name: name, unit: unit, category: category }
       perishablesList.push( item );
+      // sort the items
+      sortByName( perishablesList );
       removeFromList( masterList, id );
       renderPerishables( perishablesList, perishableDisplay );
       renderMaster( masterList, masterDisplay );
     }
   })
 
+  perishableDisplay.addEventListener('click', (event) => {
+    if( event.target.getAttribute('data-action') == 'remove' ) {
+      removeFromList( perishablesList, event.target.getAttribute('data-id') );
+      // add it to master
+
+    }
+  })
 
 })
 
