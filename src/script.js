@@ -69,7 +69,8 @@ function renderPerishables(list,element) {
 }
 
 let masterList = new Array();
-let perishablesList = [];
+let perishablesList = new Array();
+let nonperishablesList = new Array();
 window.addEventListener('load', () => {
   // selectors for view
   const masterDisplay = document.querySelector('#master');
