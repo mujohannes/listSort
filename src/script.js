@@ -23,6 +23,16 @@ function sortByName( list ) {
   }) 
 }
 
+function getItemById( id, list ) {
+  let result = list.filter( (item) => {
+    if( item.id == id ) {
+      return item;
+    }
+  })
+  console.log( list );
+  return ( result.length > 0 ) ? result[0] : false;
+}
+
 function renderMaster(list, element ) {
   element.innerHTML = '';
   list.forEach( (item) => {
@@ -93,6 +103,7 @@ let nonPerishablesList = new Array();
 window.addEventListener('load', () => {
   const masterDisplay = document.querySelector('#master');
   const perishableDisplay = document.querySelector('#perishables');
+  const nonPerishableDisplay = document.querySelector('#non-perishables');
   // load the data
   const dataFile = 'data.json';
   loadData( dataFile )
@@ -109,10 +120,12 @@ window.addEventListener('load', () => {
     const action = event.target.getAttribute('data-action');
     const id = event.target.getAttribute('data-id');
     const name = event.target.getAttribute('data-name');
-    const unit = event.target.getAttribute('data-unit');
-    const category = event.target.getAttribute('data-category');
+    // const unit = event.target.getAttribute('data-unit');
+    // const category = event.target.getAttribute('data-category');
     if( action == 'perishable' ) {
-      const item = {id: id, name: name, unit: unit, category: category }
+      // const item = {id: id, name: name, unit: unit, category: category }
+      // find the item in master list using the id
+      let item = getItemById( id, masterList );
       perishablesList.push( item );
       // sort the items
       sortByName( perishablesList );
@@ -124,9 +137,16 @@ window.addEventListener('load', () => {
 
   perishableDisplay.addEventListener('click', (event) => {
     if( event.target.getAttribute('data-action') == 'remove' ) {
-      removeFromList( perishablesList, event.target.getAttribute('data-id') );
+      const id = event.target.getAttribute('data-id');
+      removeFromList( perishablesList, id );
+      sortByName( perishablesList );
+      renderPerishables( perishablesList, perishableDisplay );
       // add it to master
-
+      let item = getItemById( id, perishablesList );
+      console.log(id)
+      masterList.push(item);
+      sortByName( masterList );
+      renderMaster( masterList, masterDisplay )
     }
   })
 
