@@ -16,14 +16,18 @@ body {
 }
 
 #master, 
-#perishables {
+#perishables,
+#non-perishables {
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: 70vh;
+  overflow: auto;
 }
 
 #master li, 
-#perishables li {
+#perishables li,
+#non-perishables li {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -32,7 +36,8 @@ body {
 }
 
 #master li button, 
-#perishables li button {
+#perishables li button,
+#non-perishables li button {
   padding: 0.5em;
 }
 

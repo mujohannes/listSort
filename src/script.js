@@ -42,7 +42,15 @@ function renderMaster( list, element ) {
             data-quantity="${item.quantity}">
             Perishable
           </button>
-          <button type="button">Non Perishable</button>
+          <button type="button"
+            data-action="nonperishable"
+            data-id="${item.id}"
+            data-name="${item.name}"
+            data-unit="${item.unit}" 
+            data-category="${item.category}"
+            data-quantity="${item.quantity}">
+            Non Perishable
+          </button>
         </div>
       </li>`;
     element.insertAdjacentHTML('beforeend', listItem);
@@ -68,13 +76,42 @@ function renderPerishables(list,element) {
   } )
 }
 
+function renderNonPerishables(list,element) {
+  element.innerHTML = '';
+  list.forEach( (item) => {
+    let listItem = 
+    `<li>
+      ${item.name}
+      <button
+        data-id="${item.id}"
+        data-name="${item.name}"
+        data-unit="${item.unit}" 
+        data-category="${item.category}"
+        data-quantity="${item.quantity}">
+      Remove
+      </button>
+    </li>`;
+    element.insertAdjacentHTML('beforeend', listItem );
+  } )
+}
+
+function storeList( key, list ) {
+  window.localStorage.setItem( key , JSON.stringify(list) );
+}
+
+function loadList( key ) {
+  list = JSON.parse( window.localStorage.getItem(key) );
+  return list;
+}
+
 let masterList = new Array();
 let perishablesList = new Array();
 let nonperishablesList = new Array();
 window.addEventListener('load', () => {
   // selectors for view
   const masterDisplay = document.querySelector('#master');
-  const perishableDisplay = document.querySelector('#perishables')
+  const perishableDisplay = document.querySelector('#perishables');
+  const nonperishableDisplay = document.querySelector('#non-perishables')
   // load the data
   const dataFile = 'data.json';
   
@@ -105,6 +142,16 @@ window.addEventListener('load', () => {
       sortList(perishablesList);
       renderPerishables( perishablesList, perishableDisplay );
       renderMaster( masterList, masterDisplay );
+      storeList('master', masterList );
+      storeList('perishables', perishablesList );
+    }
+    if( action == 'nonperishable') {
+      nonperishablesList.push(item);
+      removeFromList( masterList, id );
+      renderNonPerishables( nonperishablesList, nonperishableDisplay );
+      renderMaster( masterList, masterDisplay );
+      storeList('master', masterList );
+      storeList('nonperishables', nonperishablesList );
     }
   })
 
@@ -124,6 +171,27 @@ window.addEventListener('load', () => {
     masterList.push( item );
     sortList(masterList);
     renderMaster( masterList, masterDisplay );
+    storeList('master',masterList);
+    storeList('perishables',perishablesList);
+  })
+
+  nonperishableDisplay.addEventListener('click', (event) => {
+    // get the event target's attributes
+    const id = event.target.getAttribute('data-id');
+    const name = event.target.getAttribute('data-name');
+    const unit = event.target.getAttribute('data-unit');
+    const category = event.target.getAttribute('data-category');
+    const quantity = event.target.getAttribute('data-quantity');
+    const item = { id: id, name: name, unit: unit, category: category, quantity: quantity };
+    // remove from perishablesList
+    removeFromList( nonperishablesList, id );
+    sortList(nonperishablesList);
+    renderPerishables( nonperishablesList, nonperishableDisplay );
+    masterList.push( item );
+    sortList(masterList);
+    renderMaster( masterList, masterDisplay );
+    storeList('master',masterList);
+    storeList('nonperishables',nonperishablesList);
   })
 })
 
