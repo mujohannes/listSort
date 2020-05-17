@@ -107,6 +107,7 @@ function loadList( key ) {
 let masterList = new Array();
 let perishablesList = new Array();
 let nonperishablesList = new Array();
+
 window.addEventListener('load', () => {
   // selectors for view
   const masterDisplay = document.querySelector('#master');
@@ -115,15 +116,42 @@ window.addEventListener('load', () => {
   // load the data
   const dataFile = 'data.json';
   
-  loadData( dataFile )
-  .then( (data) => { 
-    
-    data.forEach( (item) => {
-      masterList.push( item );
-    })
-    sortList( masterList );
+  // load the master data
+  let storedMaster = loadList('master');
+  if( storedMaster ) {
+    masterList = storedMaster;
     renderMaster( masterList, masterDisplay );
-  })
+  }
+  else {
+    loadData( dataFile )
+    .then( (data) => {
+      masterList = data;
+      renderMaster( masterList, masterDisplay );
+    })
+  }
+  // load the perishables
+  let storedPerishables = loadList('perishables');
+  if( storedPerishables ) {
+    perishablesList = storedPerishables;
+    renderPerishables( perishablesList, perishableDisplay );
+  }
+
+  // load the perishables
+  let storedNonPerishables = loadList('nonperishables');
+  if( storedNonPerishables ) {
+    nonperishablesList = storedNonPerishables;
+    renderNonPerishables( nonperishablesList, nonperishableDisplay );
+  }
+
+  // loadData( dataFile )
+  // .then( (data) => { 
+    
+  //   data.forEach( (item) => {
+  //     masterList.push( item );
+  //   })
+  //   sortList( masterList );
+  //   renderMaster( masterList, masterDisplay );
+  // })
 
   // add a click listener for master list view (masterDisplay)
   masterDisplay.addEventListener('click', (event) => {
