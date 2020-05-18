@@ -118,17 +118,22 @@ window.addEventListener('load', () => {
   
   // load the master data
   let storedMaster = loadList('master');
+  // if there is data from storage
   if( storedMaster ) {
+    // use the data from storage as masterList
     masterList = storedMaster;
     renderMaster( masterList, masterDisplay );
   }
+  // if there is no data in storage
   else {
+    // load the data from file 'data.json'
     loadData( dataFile )
     .then( (data) => {
       masterList = data;
       renderMaster( masterList, masterDisplay );
     })
   }
+  
   // load the perishables
   let storedPerishables = loadList('perishables');
   if( storedPerishables ) {
