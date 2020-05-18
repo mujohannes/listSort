@@ -149,15 +149,6 @@ window.addEventListener('load', () => {
     renderNonPerishables( nonperishablesList, nonperishableDisplay );
   }
 
-  // loadData( dataFile )
-  // .then( (data) => { 
-    
-  //   data.forEach( (item) => {
-  //     masterList.push( item );
-  //   })
-  //   sortList( masterList );
-  //   renderMaster( masterList, masterDisplay );
-  // })
 
   // add a click listener for master list view (masterDisplay)
   masterDisplay.addEventListener('click', (event) => {
