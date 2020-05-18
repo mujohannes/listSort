@@ -130,10 +130,11 @@ window.addEventListener('load', () => {
     loadData( dataFile )
     .then( (data) => {
       masterList = data;
+      sortList(masterList);
       renderMaster( masterList, masterDisplay );
     })
   }
-  
+
   // load the perishables
   let storedPerishables = loadList('perishables');
   if( storedPerishables ) {
